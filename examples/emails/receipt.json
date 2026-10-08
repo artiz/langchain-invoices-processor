@@ -1,0 +1,11 @@
+{
+  "id": "demo-receipt-001",
+  "sender": "Amazon.de <bestellbestaetigung@amazon.de>",
+  "subject": "Ihre Zahlung wurde bestätigt",
+  "date": "Sat, 03 Oct 2026 12:00:00 +0200",
+  "body": "Vielen Dank für Ihre Bestellung. Wir haben Ihre Zahlung über 29,99 EUR per Kreditkarte erhalten. Rechnung im Anhang. Bestellnummer 302-1234567-1234567.",
+  "expected": {
+    "is_payment_request": false,
+    "notify": false
+  }
+}

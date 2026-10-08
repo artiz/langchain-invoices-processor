@@ -1,0 +1,13 @@
+{
+  "id": "demo-badiban-001",
+  "sender": "Hausverwaltung Gruber <office@hv-gruber.at>",
+  "subject": "Betriebskostenabrechnung 2025",
+  "date": "Thu, 01 Oct 2026 10:00:00 +0200",
+  "body": "Sehr geehrte Damen und Herren,\nanbei die Betriebskostenabrechnung 2025. Es ergibt sich eine Nachzahlung von 312,40 EUR.\nBitte überweisen Sie den Betrag bis 31.10.2026 auf folgendes Konto:\nEmpfänger: Hausverwaltung Gruber GmbH\nIBAN: AT82 1200 0528 4407 2306\nBIC: BKAUATWW\nVerwendungszweck: BK2025-TOP12\nMit freundlichen Grüßen\nHausverwaltung Gruber",
+  "expected": {
+    "is_payment_request": true,
+    "verdict": "invalid",
+    "notify": true,
+    "amount": 312.4
+  }
+}

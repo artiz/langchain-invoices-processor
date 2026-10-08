@@ -1,0 +1,13 @@
+{
+  "id": "demo-lookalike-001",
+  "sender": "Magenta Service <billing@magenta-rechnung.info>",
+  "subject": "Letzte Mahnung: offene Rechnung",
+  "date": "Wed, 07 Oct 2026 07:01:00 +0200",
+  "body": "Sehr geehrter Kunde,\ntrotz Erinnerung ist Ihre Rechnung Nr. 55120 über 189,90 EUR weiterhin offen. Bitte überweisen Sie den Betrag innerhalb von 24 Stunden, sonst wird Ihr Anschluss gesperrt.\nEmpfänger: Magenta Telekom Service\nIBAN: AT61 1904 3002 3457 3201\nVerwendungszweck: 55120\nFällig: 08.10.2026\nMit freundlichen Grüßen, Magenta Service",
+  "expected": {
+    "is_payment_request": true,
+    "verdict": "needs_review",
+    "notify": true,
+    "amount": 189.9
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": "demo-news-001",
+  "sender": "Universal <newsletter@universal-versand.at>",
+  "subject": "Winter-Update: 20% Rabatt sichern!",
+  "date": "Mon, 05 Oct 2026 07:06:22 +0200",
+  "body": "-20% auf Mode, Accessoires und Schuhe sichern! Jetzt bezahlen Sie bequem per Rechnung oder Ratenkauf. Jö Bonus Club. Mein Konto. Jetzt 20% sparen.",
+  "expected": {
+    "is_payment_request": false,
+    "notify": false
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "id": "demo-debit-001",
+  "sender": "Wien Energie <rechnung@wienenergie.at>",
+  "subject": "Ihre Jahresabrechnung ist da",
+  "date": "Fri, 02 Oct 2026 08:00:00 +0200",
+  "body": "Sehr geehrter Herr Mustermann,\nIhre Jahresabrechnung Strom liegt vor. Rechnungsbetrag: 84,12 EUR.\nDer Betrag wird am 20.10.2026 per SEPA-Lastschrift von Ihrem Konto AT48 3200 0000 1234 5864 abgebucht. Sie müssen nichts weiter tun.\nIhre Wien Energie",
+  "expected": {
+    "notify": false
+  }
+}

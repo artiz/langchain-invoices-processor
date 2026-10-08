@@ -1,0 +1,29 @@
+{
+  "id": "demo-fwd-001",
+  "eml": "self_forwarded.eml",
+  "history": {
+    "magenta.at": {
+      "payee_names": [
+        "T-Mobile Austria GmbH"
+      ],
+      "ibans": [
+        "AT821200052844072305"
+      ],
+      "amounts": [
+        48.36,
+        50.05,
+        50.05
+      ],
+      "paid_references": [
+        "918443780926"
+      ]
+    }
+  },
+  "expected": {
+    "is_payment_request": true,
+    "verdict": "payable",
+    "notify": true,
+    "amount": 50.05,
+    "iban": "AT821200052844072305"
+  }
+}

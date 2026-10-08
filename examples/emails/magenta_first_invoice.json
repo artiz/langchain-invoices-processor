@@ -1,0 +1,14 @@
+{
+  "id": "demo-magenta-002",
+  "sender": "Magenta <rechnung@magenta.at>",
+  "subject": "Magenta Rechnung für Kundennummer: 1.20000001",
+  "date": "Mon, 05 Oct 2026 20:24:11 +0200",
+  "body": "Magenta Onlinerechnung\nKundennummer: 1.20000001\nSehr geehrter Herr Max Mustermann, hier ist Ihre neue Magenta Rechnung!\nRechnungsdatum | Fällig am | Betrag (€)\n05.10.2026 | 17.10.2026 | 50.05\nIhre Überweisungsdaten\nZahlart: Überweisung | IBAN: AT82 1200 0528 4407 2305\nZahlungsempfänger: T-Mobile Austria GmbH | BIC: BKAUATWW\nZahlungsreferenz: 918443780999 | Bank: UniCredit Bank Austria AG\nZur Rechnung in Mein Magenta\nFragen zur Rechnung? In der Mein Magenta App sind wir für Sie da.\nBei dieser E-Mail Adresse handelt es sich um einen automatischen E-Mail Verteiler. Ihr Magenta Team",
+  "expected": {
+    "is_payment_request": true,
+    "verdict": "needs_review",
+    "notify": true,
+    "amount": 50.05,
+    "iban": "AT821200052844072305"
+  }
+}
