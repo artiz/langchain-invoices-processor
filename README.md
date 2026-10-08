@@ -16,23 +16,23 @@ pauses with `interrupt()`, its state is kept by a persistent checkpointer, and a
 
 ```mermaid
 flowchart LR
-    gmail[(Gmail)] <--> mcp["KateChat Gmail MCP<br/>search_emails · get_raw_email"]
+    gmail[(Gmail)] <--> mcp["KateChat<br/>Gmail MCP"]
     mcp --> poller["Gmail poller<br/>every 5 min"]
-    poller --> parser["mail_parser<br/>docling-rs → Markdown"]
+    poller --> parser["mail_parser<br/>docling-rs"]
     parser --> sup{{supervisor}}
-    subgraph lg["LangGraph · one thread per email"]
-        sup <--> triage["triage (LLM)"]
-        sup <--> extract["extract (LLM)"]
-        sup <--> validate["validate (rules)"]
-        sup <--> investigate["investigate (ReAct agent)"]
+    subgraph lg["LangGraph: one thread per email"]
+        sup <--> triage["triage<br/>LLM"]
+        sup <--> extract["extract<br/>LLM"]
+        sup <--> validate["validate<br/>rules"]
+        sup <--> investigate["investigate<br/>ReAct agent"]
         sup <--> human["human_review<br/>interrupt()"]
         sup <--> record["record"]
     end
-    investigate -.-> mcp
-    human --> tg["Telegram bot"]
-    tg -- "✅ Paid / ⏰ Remind / 🚫 Ignore<br/>Command(resume)" --> human
-    record --> store[("Store: payee memory")]
-    lg -.-> ckpt[("SQLite checkpointer")]
+    investigate -. "search" .-> mcp
+    human -- "notify" --> tg["Telegram<br/>bot"]
+    tg -- "resume" --> human
+    record --> store[("Store<br/>payees")]
+    lg -.-> ckpt[("SQLite<br/>checkpoints")]
 ```
 
 ## Contents
