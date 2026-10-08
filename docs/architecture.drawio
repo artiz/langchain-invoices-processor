@@ -1,0 +1,166 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="flow" name="Invoice agent flow">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="f_agent" value="invoice-agent (Python, asyncio daemon: &lt;i&gt;uv run invoice-agent run&lt;/i&gt;)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=2;dashed=1;fillColor=none;strokeColor=#999999;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="400" y="30" width="940" height="900" as="geometry" />
+        </mxCell>
+        <mxCell id="f_graph" value="LangGraph StateGraph · one thread per Gmail message (thread_id = message id)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=3;fillColor=#faf7fc;strokeColor=#9673a6;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="640" y="80" width="680" height="520" as="geometry" />
+        </mxCell>
+        <mxCell id="gmail" value="&lt;b&gt;Gmail&lt;/b&gt;&lt;br&gt;(Google)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fontSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="40" y="60" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="oauth" value="&lt;b&gt;Google OAuth 2.0&lt;/b&gt;&lt;br&gt;loopback + PKCE&lt;br&gt;scope: gmail.readonly&lt;br&gt;&lt;i&gt;invoice-agent auth&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fontSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="40" y="330" width="160" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="mcp" value="&lt;b&gt;KateChat Gmail MCP&lt;/b&gt;&lt;br&gt;katechat.tech/mcp/gmail&lt;br&gt;streamable HTTP&lt;hr&gt;search_emails&lt;br&gt;get_raw_email&lt;br&gt;get_email · list_emails&lt;br&gt;&lt;i&gt;(send/draft tools filtered out)&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fontSize=12;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="200" y="160" width="180" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="poller" value="&lt;b&gt;Gmail poller&lt;/b&gt;&lt;br&gt;every 5 min&lt;br&gt;search_emails(query)&lt;br&gt;skip known thread_ids" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fontSize=12;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="420" y="90" width="190" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="parser" value="&lt;b&gt;mail_parser&lt;/b&gt;&lt;br&gt;stdlib email (MIME, headers)&lt;br&gt;+ &lt;b&gt;docling-rs&lt;/b&gt;: HTML body,&lt;br&gt;PDF / DOCX / XLSX → Markdown&lt;br&gt;self-forward detection" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fontSize=12;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="420" y="230" width="190" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="tokens" value="&lt;b&gt;GoogleTokenProvider&lt;/b&gt;&lt;br&gt;refresh token → access token&lt;br&gt;.data/google_token.json" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fontSize=12;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="420" y="380" width="190" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="start" value="START" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="660" y="120" width="60" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="super" value="supervisor&lt;br&gt;&lt;span style='font-size:10px;font-weight:normal'&gt;LLM router&lt;br&gt;+ allowed_next()&lt;/span&gt;" style="rhombus;whiteSpace=wrap;html=1;fontSize=12;fillColor=#9673a6;fontColor=#ffffff;strokeColor=#6b4f7b;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="905" y="280" width="150" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="triage" value="&lt;b&gt;triage&lt;/b&gt;&lt;br&gt;LLM · structured output&lt;br&gt;payment request?" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fontSize=12;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="680" y="180" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="extract" value="&lt;b&gt;extract&lt;/b&gt;&lt;br&gt;LLM · structured output&lt;br&gt;amount, IBAN, due date…" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fontSize=12;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="900" y="120" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="validate" value="&lt;b&gt;validate&lt;/b&gt;&lt;br&gt;deterministic rules&lt;br&gt;IBAN mod-97, history…" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fontSize=12;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="180" width="170" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="investigate" value="&lt;b&gt;investigate&lt;/b&gt;&lt;br&gt;create_agent (ReAct)&lt;br&gt;tools: search_mailbox,&lt;br&gt;read_email, payee_history" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fontSize=12;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="670" y="450" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="human" value="&lt;b&gt;human_review&lt;/b&gt;&lt;br&gt;&lt;b&gt;interrupt()&lt;/b&gt;&lt;br&gt;pauses thread,&lt;br&gt;resumes on button" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fontSize=12;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="900" y="460" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="record" value="&lt;b&gt;record&lt;/b&gt;&lt;br&gt;learn payee IBAN&lt;br&gt;on “paid”" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fontSize=12;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="450" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="end" value="END" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="340" width="60" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="ckpt" value="&lt;b&gt;Checkpointer&lt;/b&gt;&lt;br&gt;AsyncSqliteSaver&lt;br&gt;.data/checkpoints.sqlite" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fontSize=11;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="440" y="640" width="170" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="store" value="&lt;b&gt;Store&lt;/b&gt; (AsyncSqliteStore)&lt;br&gt;payees/&amp;lt;domain&amp;gt;&lt;br&gt;notifications/&amp;lt;thread&amp;gt;&lt;br&gt;telegram/chat" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fontSize=11;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="660" y="640" width="190" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="notify" value="&lt;b&gt;Notification queue&lt;/b&gt;&lt;br&gt;interrupt payload → message&lt;br&gt;reminders (notify_after)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fontSize=12;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="900" y="650" width="190" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="tgloop" value="&lt;b&gt;Telegram bot loop&lt;/b&gt;&lt;br&gt;long polling&lt;br&gt;/start /check /pending&lt;br&gt;callback → Command(resume)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fontSize=12;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="1130" y="640" width="190" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="openai" value="&lt;b&gt;OpenAI&lt;/b&gt;&lt;br&gt;gpt-5.4-mini&lt;br&gt;Responses API" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="1400" y="140" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="langfuse" value="&lt;b&gt;Langfuse&lt;/b&gt; (optional)&lt;br&gt;CallbackHandler traces" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="1400" y="260" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="tgapi" value="&lt;b&gt;Telegram Bot API&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fontSize=12;fillColor=#dae8fc;strokeColor=#0088cc;" vertex="1" parent="1">
+          <mxGeometry x="1400" y="650" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="user" value="You" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1610" y="640" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="note" value="&lt;b&gt;Guardrails&lt;/b&gt;&lt;br&gt;• LLM extracts, code decides (checks.py)&lt;br&gt;• supervisor limited to allowed_next(); falls back to human_review&lt;br&gt;• read-only MCP tools, gmail.readonly scope&lt;br&gt;• email text wrapped as untrusted &amp;lt;email&amp;gt; block&lt;br&gt;• nothing is marked paid without your button press&lt;br&gt;• bot answers only the linked chat; call &amp;amp; recursion limits" style="shape=note;whiteSpace=wrap;html=1;size=14;fontSize=11;align=left;spacingLeft=6;fillColor=#fffbe6;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="420" y="770" width="470" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" value="&lt;b&gt;Telegram message&lt;/b&gt;&lt;br&gt;payee · amount · due · IBAN · BIC · reference&lt;br&gt;checks ✅⚠️❌ · investigation findings&lt;br&gt;[✅ Paid] [⏰ Remind me] [🚫 Ignore]" style="shape=note;whiteSpace=wrap;html=1;size=14;fontSize=11;align=left;spacingLeft=6;fillColor=#fffbe6;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="1130" y="790" width="200" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" value="Gmail REST API" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#555555;endArrow=block;endFill=1;startArrow=block;startFill=1;" edge="1" parent="1" source="gmail" target="mcp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="search_emails / get_raw_email&lt;br&gt;Bearer &amp;lt;access token&amp;gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#d79b00;endArrow=block;endFill=1;" edge="1" parent="1" source="poller" target="mcp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="raw RFC 822" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#555555;endArrow=block;endFill=1;" edge="1" parent="1" source="poller" target="parser">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="EmailMessage&lt;br&gt;(body + attachments)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#555555;endArrow=block;endFill=1;" edge="1" parent="1" source="parser" target="start">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="refresh token" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#555555;endArrow=block;endFill=1;dashed=1;" edge="1" parent="1" source="oauth" target="tokens">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="access token" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#555555;endArrow=block;endFill=1;dashed=1;" edge="1" parent="1" source="tokens" target="poller">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#555555;endArrow=block;endFill=1;" edge="1" parent="1" source="start" target="super">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s0" value="Command(goto)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#9673a6;endArrow=block;endFill=1;startArrow=block;startFill=1;" edge="1" parent="1" source="super" target="triage">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#9673a6;endArrow=block;endFill=1;startArrow=block;startFill=1;" edge="1" parent="1" source="super" target="extract">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#9673a6;endArrow=block;endFill=1;startArrow=block;startFill=1;" edge="1" parent="1" source="super" target="validate">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#9673a6;endArrow=block;endFill=1;startArrow=block;startFill=1;" edge="1" parent="1" source="super" target="investigate">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#9673a6;endArrow=block;endFill=1;startArrow=block;startFill=1;" edge="1" parent="1" source="super" target="human">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#9673a6;endArrow=block;endFill=1;startArrow=block;startFill=1;" edge="1" parent="1" source="super" target="record">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="s9" value="finish" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#9673a6;endArrow=block;endFill=1;" edge="1" parent="1" source="super" target="end">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="search_mailbox / read_email" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#d79b00;endArrow=block;endFill=1;dashed=1;" edge="1" parent="1" source="investigate" target="mcp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="triage · extract · route · investigate" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#d6b656;endArrow=block;endFill=1;dashed=1;" edge="1" parent="1" source="f_graph" target="openai">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="traces" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#d6b656;endArrow=block;endFill=1;dashed=1;" edge="1" parent="1" source="f_graph" target="langfuse">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" value="state after every step" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#82b366;endArrow=block;endFill=1;dashed=1;" edge="1" parent="1" source="f_graph" target="ckpt">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" value="payee history" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#82b366;endArrow=block;endFill=1;dashed=1;" edge="1" parent="1" source="record" target="store">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12b" value="read history" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#82b366;endArrow=block;endFill=1;dashed=1;" edge="1" parent="1" source="validate" target="store">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" value="interrupt payload" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#555555;endArrow=block;endFill=1;" edge="1" parent="1" source="human" target="notify">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" value="send / remind" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#555555;endArrow=block;endFill=1;" edge="1" parent="1" source="notify" target="tgloop">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" value="sendMessage / getUpdates" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#0088cc;endArrow=block;endFill=1;startArrow=block;startFill=1;" edge="1" parent="1" source="tgloop" target="tgapi">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#0088cc;endArrow=block;endFill=1;startArrow=block;startFill=1;" edge="1" parent="1" source="tgapi" target="user">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" value="Command(resume={action})" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#b85450;endArrow=block;endFill=1;exitX=0.5;exitY=0;entryX=1;entryY=0.75;" edge="1" parent="1" source="tgloop" target="human">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
